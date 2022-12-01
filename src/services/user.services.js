@@ -1,6 +1,6 @@
-const { User } = require('../models/index');
+const { User, sequelize } = require('../models/index');
 const generateToken = require('./authorizations/jwtGenerate');
-const { loginValidation } = require('./validations/userValidations');
+const { loginValidation, newUserValidation } = require('./validations/userValidations');
 
 const logUser = async (loginData) => {
   try {
@@ -20,10 +20,44 @@ const logUser = async (loginData) => {
       status: 200, data: { token: generateToken({ userId: response.dataValues.id }) },
     };
   } catch (err) {
-    return { status: 400, data: { message: err.message } };
+    return { status: 500, data: { message: err.message } };
+  }
+};
+
+const createUserInDb = async ({ displayName, password, email, image }) => {
+  const result = await sequelize.transaction(async (transaction) => {
+    const newUser = await User.create(
+      { displayName, password, email, image },
+      { transaction },
+    );
+    return newUser;
+  });
+  return result;
+};
+
+const createUser = async (userData) => {
+  try {
+    const validationMessage = newUserValidation(userData);
+  
+    if (validationMessage !== 'without errors') {
+      return { status: validationMessage.status, data: { message: validationMessage.error } };
+    }
+
+    const userAlreadyExists = await User.findOne(
+      { where: { email: userData.email } },
+    );
+
+    if (userAlreadyExists) return { status: 409, data: { message: 'User already registered' } };
+
+    await createUserInDb(userData); // VERIFICAR
+
+    return { status: 201, data: { token: generateToken() } };
+  } catch (err) {
+    return { status: 500, data: { message: err.message } };
   }
 };
 
 module.exports = {
   logUser,
+  createUser,
 };
