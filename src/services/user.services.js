@@ -38,6 +38,20 @@ const findAllUsers = async () => {
   }
 };
 
+const findUserById = async (userId) => {
+  try {
+    const user = await User.findByPk(userId);
+
+    if (!user) return { status: 404, data: { message: 'User does not exist' } };
+
+    delete user.dataValues.password;
+
+    return { status: 200, data: user.dataValues };
+  } catch (err) {
+    return { status: 500, data: { message: err.message } };
+  }
+};
+
 const createUserInDb = async ({ displayName, password, email, image }) => {
   const result = await sequelize.transaction(async (transaction) => {
     const newUser = await User.create(
@@ -75,4 +89,5 @@ module.exports = {
   logUser,
   createUser,
   findAllUsers,
+  findUserById,
 };

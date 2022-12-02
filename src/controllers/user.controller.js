@@ -11,6 +11,12 @@ const getUsers = async (_req, res) => {
   return res.status(status).json(data);
 };
 
+const getUserById = async (req, res) => {
+  const { userId } = req.params;
+  const { status, data } = await userService.findUserById(userId);
+  return res.status(status).json(data);
+};
+
 const registerUser = async (req, res) => {
   const userData = req.body;
   const { status, data } = await userService.createUser(userData);
@@ -21,4 +27,5 @@ module.exports = {
   logUser,
   registerUser,
   getUsers,
+  getUserById,
 };
