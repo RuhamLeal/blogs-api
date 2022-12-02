@@ -42,10 +42,19 @@ const userSchema = Joi.object({
       'any.required': requiredText,
     }),
     image: Joi.string(),
+});
 
+const categorySchema = Joi.object({
+  name: Joi.string()
+    .required()
+    .messages({
+      'string.empty': '"name" is required',
+      'any.required': '"name" is required',
+    }),
 });
 
 module.exports = {
   loginSchema,
   userSchema,
+  categorySchema,
 };
