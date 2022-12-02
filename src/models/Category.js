@@ -13,6 +13,13 @@ const CategorySchema = (sequelize, DataTypes) => {
       tableName: 'categories',
     },
   );
+
+  Category.associate = ({ PostCategory }) => {
+    Category.hasMany(PostCategory,
+      { foreignKey: 'category_id', as: 'categories' }
+    )
+  }
+
   return Category;
 }
 
