@@ -32,9 +32,7 @@ const createCategory = async (newCategoryData) => {
       return { status: validationMessage.status, data: { message: validationMessage.error } };
     }
 
-    await createCategoryInDb(newCategoryData);
-
-    const addedCategory = await Category.findOne({ where: { name: newCategoryData.name } });
+    const addedCategory = await createCategoryInDb(newCategoryData);
 
     return { status: 201, data: addedCategory.dataValues };
   } catch (err) {

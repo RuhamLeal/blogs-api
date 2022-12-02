@@ -53,8 +53,30 @@ const categorySchema = Joi.object({
     }),
 });
 
+const postSchema = Joi.object({
+  title: Joi.string()
+    .required()
+    .messages({
+      'string.empty': requiredText,
+      'any.required': requiredText,
+    }),
+  content: Joi.string()
+    .required()
+    .messages({
+      'string.empty': requiredText,
+      'any.required': requiredText,
+    }),
+  categoryIds: Joi.array()
+    .required()
+    .messages({
+      'array.empty': requiredText,
+      'any.required': requiredText,
+    }),
+});
+
 module.exports = {
   loginSchema,
   userSchema,
   categorySchema,
+  postSchema,
 };
