@@ -24,6 +24,20 @@ const logUser = async (loginData) => {
   }
 };
 
+const findAllUsers = async () => {
+  try {
+    const users = await User.findAll();
+
+    const usersWithoutPasswords = users.map(({ id, displayName, email, image }) => (
+      { id, displayName, email, image }
+    ));
+
+    return { status: 200, data: usersWithoutPasswords };
+  } catch (err) {
+    return { status: 500, data: { message: err.message } };
+  }
+};
+
 const createUserInDb = async ({ displayName, password, email, image }) => {
   const result = await sequelize.transaction(async (transaction) => {
     const newUser = await User.create(
@@ -60,4 +74,5 @@ const createUser = async (userData) => {
 module.exports = {
   logUser,
   createUser,
+  findAllUsers,
 };
