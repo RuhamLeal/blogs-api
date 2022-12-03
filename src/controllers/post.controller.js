@@ -13,7 +13,6 @@ const getPostById = async (req, res) => {
 
 const getPostsByQuery = async (req, res) => {
   const { q } = req.query;
-  console.log(q, typeof q, '-------------------------------------------------------------------------');
   const { status, data } = await postService.findPostByQuery(q);
   return res.status(status).json(data);
 };
