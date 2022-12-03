@@ -52,6 +52,16 @@ const findUserById = async (userId) => {
   }
 };
 
+const deleteUser = async (userId) => {
+  try { 
+    await User.destroy({ where: { id: userId } });
+
+    return { status: 204 };
+  } catch (err) {
+    return { status: 500, data: { message: err.message } };
+  }
+};
+
 const createUserInDb = async ({ displayName, password, email, image }) => {
   const result = await sequelize.transaction(async (transaction) => {
     const newUser = await User.create(
@@ -90,4 +100,5 @@ module.exports = {
   createUser,
   findAllUsers,
   findUserById,
+  deleteUser,
 };

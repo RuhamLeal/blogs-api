@@ -8,6 +8,7 @@ userRouter
   .get('/user', tokenAuthentication, UserController.getUsers)
   .get('/user/:userId', tokenAuthentication, UserController.getUserById)
   .post('/login', UserController.logUser)
-  .post('/user', UserController.registerUser);
+  .post('/user', UserController.registerUser)
+  .delete('/user/me', tokenAuthentication, UserController.deleteUser);
 
 module.exports = userRouter;
