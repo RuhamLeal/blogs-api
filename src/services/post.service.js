@@ -12,9 +12,27 @@ const findAllPosts = async () => {
       },
     );
 
-    console.log(posts);
-
     return { status: 200, data: posts };
+  } catch (err) {
+    return { status: 500, data: { message: err.message } };
+  }
+};
+
+const findPostById = async (postId) => {
+  try {
+    const post = await BlogPost.findByPk(postId,
+      { 
+        include: [
+          { model: User, as: 'user', attributes: ['id', 'displayName', 'email', 'image'] },
+          { model: Category, as: 'categories', through: { attributes: [] } },
+        ],
+      });
+
+    console.log(post);
+
+    if (post) return { status: 200, data: post };
+  
+    return { status: 404, data: { message: 'Post does not exist' } };
   } catch (err) {
     return { status: 500, data: { message: err.message } };
   }
@@ -75,4 +93,5 @@ const createPost = async (userId, newPostData) => {
 module.exports = {
   createPost,
   findAllPosts,
+  findPostById,
 };

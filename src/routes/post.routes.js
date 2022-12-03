@@ -6,6 +6,7 @@ const postRouter = express.Router();
 
 postRouter
   .get('/post', tokenAuthentication, postController.getPosts)
+  .get('/post/:postId', tokenAuthentication, postController.getPostById)
   .post('/post', tokenAuthentication, postController.addPost);
 
 module.exports = postRouter;
