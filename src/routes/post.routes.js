@@ -6,6 +6,7 @@ const postRouter = express.Router();
 
 postRouter
   .get('/post', tokenAuthentication, postController.getPosts)
+  .get('/post/search', tokenAuthentication, postController.getPostsByQuery)
   .get('/post/:postId', tokenAuthentication, postController.getPostById)
   .put('/post/:postId', tokenAuthentication, postController.updatePost)
   .delete('/post/:postId', tokenAuthentication, postController.deletePost)

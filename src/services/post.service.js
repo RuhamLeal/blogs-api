@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { BlogPost, Category, sequelize, PostCategory, User } = require('../models/index');
 const { newPostValidation, updatePostValidation } = require('./validations/postValidations');
 
@@ -31,6 +32,29 @@ const findPostById = async (postId) => {
     if (post) return { status: 200, data: post };
   
     return { status: 404, data: { message: 'Post does not exist' } };
+  } catch (err) {
+    return { status: 500, data: { message: err.message } };
+  }
+};
+
+const findPostByQuery = async (query) => {
+  try {
+    if (query.length > 0) {
+      const post = await BlogPost.findAll(
+      { 
+        where: { [Op.or]: [{ title: query }, { content: query }] },
+        include: [
+          { model: User, as: 'user', attributes: ['id', 'displayName', 'email', 'image'] },
+          { model: Category, as: 'categories', through: { attributes: [] } }],
+      },
+      );
+      
+      if (!post) return { status: 200, data: [] };
+
+      return { status: 200, data: post };
+    }
+    const allPosts = await findAllPosts();
+    return { status: 200, data: allPosts.data };
   } catch (err) {
     return { status: 500, data: { message: err.message } };
   }
@@ -140,4 +164,5 @@ module.exports = {
   findPostById,
   updatePost,
   deletePost,
+  findPostByQuery,
 };

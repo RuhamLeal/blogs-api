@@ -11,6 +11,13 @@ const getPostById = async (req, res) => {
   return res.status(status).json(data);
 };
 
+const getPostsByQuery = async (req, res) => {
+  const { q } = req.query;
+  console.log(q, typeof q, '-------------------------------------------------------------------------');
+  const { status, data } = await postService.findPostByQuery(q);
+  return res.status(status).json(data);
+};
+
 const updatePost = async (req, res) => {
   const { userId } = req;
   const { postId } = req.params;
@@ -40,4 +47,5 @@ module.exports = {
   getPostById,
   updatePost,
   deletePost,
+  getPostsByQuery,
 };
