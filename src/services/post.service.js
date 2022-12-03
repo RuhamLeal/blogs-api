@@ -1,5 +1,24 @@
-const { BlogPost, Category, sequelize, PostCategory } = require('../models/index');
+const { BlogPost, Category, sequelize, PostCategory, User } = require('../models/index');
 const newPostValidation = require('./validations/postValidations');
+
+const findAllPosts = async () => {
+  try {
+    const posts = await BlogPost.findAll(
+      { 
+        include: [
+          { model: User, as: 'user', attributes: ['id', 'displayName', 'email', 'image'] },
+          { model: Category, as: 'categories', through: { attributes: [] } },
+        ],
+      },
+    );
+
+    console.log(posts);
+
+    return { status: 200, data: posts };
+  } catch (err) {
+    return { status: 500, data: { message: err.message } };
+  }
+};
 
 const createPostInDb = async ({ title, content, categoryIds }, userId) => {
   const result = await sequelize.transaction(async (transaction) => {
@@ -55,4 +74,5 @@ const createPost = async (userId, newPostData) => {
 
 module.exports = {
   createPost,
+  findAllPosts,
 };
