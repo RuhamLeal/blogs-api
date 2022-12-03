@@ -10,6 +10,6 @@ postRouter
   .get('/post/:postId', tokenAuthentication, postController.getPostById)
   .put('/post/:postId', tokenAuthentication, postController.updatePost)
   .delete('/post/:postId', tokenAuthentication, postController.deletePost)
-  .post('/post', tokenAuthentication, postController.addPost);
+  .post('/post', tokenAuthentication, postController.addPost); // verify
 
 module.exports = postRouter;
