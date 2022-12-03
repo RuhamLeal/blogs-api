@@ -74,9 +74,25 @@ const postSchema = Joi.object({
     }),
 });
 
+const updatePostSchema = Joi.object({
+  title: Joi.string()
+    .required()
+    .messages({
+      'string.empty': requiredText,
+      'any.required': requiredText,
+    }),
+  content: Joi.string()
+    .required()
+    .messages({
+      'string.empty': requiredText,
+      'any.required': requiredText,
+    }),
+});
+
 module.exports = {
   loginSchema,
   userSchema,
   categorySchema,
   postSchema,
+  updatePostSchema,
 };

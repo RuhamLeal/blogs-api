@@ -1,5 +1,5 @@
 const { BlogPost, Category, sequelize, PostCategory, User } = require('../models/index');
-const newPostValidation = require('./validations/postValidations');
+const { newPostValidation, updatePostValidation } = require('./validations/postValidations');
 
 const findAllPosts = async () => {
   try {
@@ -28,11 +28,37 @@ const findPostById = async (postId) => {
         ],
       });
 
-    console.log(post);
-
     if (post) return { status: 200, data: post };
   
     return { status: 404, data: { message: 'Post does not exist' } };
+  } catch (err) {
+    return { status: 500, data: { message: err.message } };
+  }
+};
+
+const updatePost = async (userId, postId, postData) => {
+  try {
+    const validationMessage = updatePostValidation(postData);
+  
+    if (validationMessage !== 'without errors') {
+      return { status: validationMessage.status, data: { message: validationMessage.error } };
+    }
+
+    const post = await BlogPost.findByPk(postId);
+
+    if (!post) return { status: 404, data: { message: 'Post does not exist' } };
+
+    if (userId !== post.userId) {
+      return { status: 401, data: { message: 'Unauthorized user' } };
+    }
+
+    await BlogPost.update({
+      title: postData.title, content: postData.content,
+    }, { where: { id: post.id } });
+
+    const updatedPost = await findPostById(postId);
+
+    return { status: 200, data: updatedPost.data };
   } catch (err) {
     return { status: 500, data: { message: err.message } };
   }
@@ -94,4 +120,5 @@ module.exports = {
   createPost,
   findAllPosts,
   findPostById,
+  updatePost,
 };
