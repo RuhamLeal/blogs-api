@@ -14,7 +14,7 @@ Project made in [Trybe](https://www.betrybe.com/) course and uses node.js, expre
 
 ## Getting Started
 
-This API was developed by me and it works with a mysql database, many endpoints have validations and are working with route management, I user Json Web Token to manage authorizations and tokens, it works locally so you need to download the repository      
+This API was developed by me and it works with a mysql database, many endpoints have validations and are working with route management, I used Json Web Token to manage authorizations and tokens, it works locally so you need to download the repository      
 
 
 SOME ENDPOINTS:    
