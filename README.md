@@ -17,7 +17,16 @@ Project made in [Trybe](https://www.betrybe.com/) course and uses node.js, expre
 This API was developed by me and it works with a mysql database, many endpoints have validations and are working with route management, I used Json Web Token to manage authorizations and tokens, it works locally so you need to download the repository      
 
 
-SOME ENDPOINTS:    
+SOME ENDPOINTS:   
+
+User: POST 'http://localhost:3000/user' to register a new User        
+User: POST 'http://localhost:3000/login' to login with your User ( This endpoint is important, he returns a token that will be necessary to make other requests )      
+Category: POST 'http://localhost:3000/category' to add a new category       
+Post: GET 'http://localhost:3000/post' to show all posts in database    
+Post: GET 'http://localhost:3000/post/{postId}' to show a post by its id    
+Post: GET 'http://localhost:3000/post/search?q={query}' to show a blog post where the query equals the post title or content            
+Post: POST 'http://localhost:3000/post' to add a new post           
+Post: DELETE 'http://localhost:3000/post/{postId}' to delete a post           
   
 
 Project have more endpoints, install repo and see more !
