@@ -23,7 +23,7 @@ const BlogPostSchema = (sequelize, DataTypes) => {
 
   BlogPost.associate = ({ User, PostCategory }) => {
     BlogPost.belongsTo(User,
-      { foreignKey: 'user_id', as: 'user' });
+      { foreignKey: 'userId', as: 'user' });
     BlogPost.hasMany(PostCategory, 
       { foreignKey: 'post_id', as: 'posts'  }
     )
